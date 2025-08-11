@@ -12,30 +12,38 @@
 
 #include "pipex.h"
 
+void	run_pipex_normal(int argc, char **argv, char **envp)
+{
+	t_pipex	px;
+	int		num_cmds;
+	int		num_pipes;
+
+	num_cmds = argc - 3;
+	num_pipes = num_cmds - 1;
+	check_files(argv[1], argv[argc - 1]);
+	px.argc = argc;
+	px.argv = argv;
+	px.envp = envp;
+	px.pids = NULL;
+	px.pipes = NULL;
+	px.pipes = allocate_pipes(num_pipes);
+	px.pids = malloc(sizeof(pid_t) * num_cmds);
+	create_all_pipes(px.pipes, num_pipes);
+	create_all_processes(num_cmds, &px);
+	close_all_pipes(px.pipes, num_pipes);
+	wait_all_processes(px.pids, num_cmds);
+	free_pipes(px.pipes, num_pipes);
+	free(px.pids);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-    int		num_cmds;
-    int		num_pipes;
-    int		**pipes;
-    pid_t	*pids;
-    int		validation_result;
+	int	validation_result;
 
-    validation_result = validate_args(argc, argv);
-    if (validation_result == 2)  // here_doc detectado
-        handle_here_doc_mode(argc, argv, envp);
-    else  // modo normal
-    {
-        check_files(argv[1], argv[argc - 1]);
-        num_cmds = argc - 3;
-        num_pipes = num_cmds - 1;
-        pipes = allocate_pipes(num_pipes);
-        pids = malloc(sizeof(pid_t) * num_cmds);
-        create_all_pipes(pipes, num_pipes);
-        create_all_processes(pids, num_cmds, argc, argv, envp, pipes);
-        close_all_pipes(pipes, num_pipes);
-        wait_all_processes(pids, num_cmds);
-        free_pipes(pipes, num_pipes);
-        free(pids);
-    }
-    return (0);
+	validation_result = validate_args(argc, argv);
+	if (validation_result == 2)
+		handle_here_doc_mode(argc, argv, envp);
+	else
+		run_pipex_normal(argc, argv, envp);
+	return (0);
 }

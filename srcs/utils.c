@@ -14,13 +14,13 @@
 
 void	free_pipes(int **pipes, int num_pipes)
 {
-    int	i;
+	int	i;
 
-    i = 0;
-    while (i < num_pipes)
-    {
-        free(pipes[i]);
-        i++;
-    }
-    free(pipes);
+	i = 0;
+	while (i < num_pipes)
+	{
+		free(pipes[i]);
+		i++;
+	}
+	free(pipes);
 }

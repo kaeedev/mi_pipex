@@ -12,71 +12,71 @@
 
 #include "pipex.h"
 
-int **allocate_pipes(int num_pipes)
+int	**allocate_pipes(int num_pipes)
 {
-    int **pipes;
-    int i;
-    
-    pipes = malloc(sizeof(int *) * num_pipes);
-    i = 0;
-    while (i < num_pipes)
-    {
-        pipes[i] = malloc(sizeof(int) * 2);
-        i++;
-    }
-    return (pipes);
+	int		**pipes;
+	int		i;
+
+	pipes = malloc(sizeof(int *) * num_pipes);
+	i = 0;
+	while (i < num_pipes)
+	{
+		pipes[i] = malloc(sizeof(int) * 2);
+		i++;
+	}
+	return (pipes);
 }
 
 void	create_all_pipes(int **pipes, int num_pipes)
 {
-    int	i;
+	int	i;
 
-    i = 0;
-    while (i < num_pipes)
-    {
-        if (pipe(pipes[i]) == -1)
-            ft_error(4);
-        i++;
-    }
+	i = 0;
+	while (i < num_pipes)
+	{
+		if (pipe(pipes[i]) == -1)
+			ft_error(4);
+		i++;
+	}
 }
 
-void	create_all_processes(pid_t *pids, int num_cmds, int argc, char **argv, char **envp, int **pipes)
+void	create_all_processes(int num_cmds, t_pipex *px)
 {
-    int	i;
+	int	i;
 
-    i = 0;
-    while (i < num_cmds)
-    {
-        pids[i] = fork();
-        if (pids[i] == -1)
-            ft_error(4);
-        if (pids[i] == 0)
-            execute_command(i, argc, argv, envp, pipes);
-        i++;
-    }
+	i = 0;
+	while (i < num_cmds)
+	{
+		px->pids[i] = fork();
+		if (px->pids[i] == -1)
+			ft_error(4);
+		if (px->pids[i] == 0)
+			execute_command(i, px);
+		i++;
+	}
 }
 
 void	close_all_pipes(int **pipes, int num_pipes)
 {
-    int	i;
+	int	i;
 
-    i = 0;
-    while (i < num_pipes)
-    {
-        close(pipes[i][0]);
-        close(pipes[i][1]);
-        i++;
-    }
+	i = 0;
+	while (i < num_pipes)
+	{
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+		i++;
+	}
 }
 
 void	wait_all_processes(pid_t *pids, int num_cmds)
 {
-    int	i;
+	int	i;
 
-    i = 0;
-    while (i < num_cmds)
-    {
-        waitpid(pids[i], NULL, 0);
-        i++;
-    }
+	i = 0;
+	while (i < num_cmds)
+	{
+		waitpid(pids[i], NULL, 0);
+		i++;
+	}
 }

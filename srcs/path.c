@@ -41,18 +41,17 @@ char	*create_path(char *dir, char *cmd)
 
 char	*find_command_path(char *cmd, char **envp)
 {
-	if (ft_strchr(cmd, '/'))
-		return (ft_strdup(cmd));
-
 	char	*path;
 	char	*full_path;
 	char	**dirs;
 	int		i;
 
+	if (ft_strchr(cmd, '/'))
+		return (ft_strdup(cmd));
 	i = 0;
 	path = get_env_path(envp);
 	dirs = ft_split(path, ':');
-	while(dirs[i])
+	while (dirs[i])
 	{
 		full_path = create_path(dirs[i], cmd);
 		if (access(full_path, X_OK) == 0)
