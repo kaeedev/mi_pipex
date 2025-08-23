@@ -15,26 +15,25 @@
 void	ft_error(int i)
 {
 	if (i == 0)
-		ft_printf("Usage: ./pipex file1 cmd1 cmd2 file2\n");
+		write(2, "Usage: ./pipex file1 cmd1 cmd2 file2\n", 37);
 	else if (i == 1)
-		ft_printf("Error: Input file does not exist\n");
+		write(2, "Error: Input file does not exist\n", 33);
 	else if (i == 2)
-		ft_printf("Error: Input file is not readable\n");
+		write(2, "Error: Input file is not readable\n", 34);
 	else if (i == 3)
-		ft_printf("Error: Cannot write to output file\n");
+		write(2, "Error: Cannot write to output file\n", 35);
 	else if (i == 4)
-		ft_printf("Error: Pipe error\n");
+		write(2, "Error: Pipe error\n", 19);
 	else if (i == 5)
-		ft_printf("Error: Cannot open file\n");
+		write(2, "Error: Cannot open file\n", 24);
 	else if (i == 6)
-		ft_printf("Error: Error with execve\n");
+		write(2, "Error: Error with execve\n", 25);
 	exit(1);
 }
 
 int	validate_args(int argc, char **argv)
 {
-	if (argc == 6 && ft_strncmp(argv[1], "here_doc", 8) == 0)
-		return (2);
+	(void)argv;
 	if (argc >= 5)
 		return (1);
 	ft_error(0);

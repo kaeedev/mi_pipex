@@ -55,9 +55,13 @@ char	*find_command_path(char *cmd, char **envp)
 	{
 		full_path = create_path(dirs[i], cmd);
 		if (access(full_path, X_OK) == 0)
+		{
+			free_split(dirs);
 			return (full_path);
+		}
 		free(full_path);
 		i ++;
 	}
+	free_split(dirs);
 	return (NULL);
 }

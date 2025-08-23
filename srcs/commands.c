@@ -58,6 +58,15 @@ void	execute_command(int cmd_index, t_pipex *px)
 	close_all_pipes(px->pipes, num_cmds - 1);
 	cmd_args = parse_command(px->argv[cmd_index + 2]);
 	cmd_path = find_command_path(cmd_args[0], px->envp);
-	if (execve(cmd_path, cmd_args, px->envp) == -1)
+	if (!cmd_path)
+	{
+		free_split(cmd_args);
 		ft_error(6);
+	}
+	if (execve(cmd_path, cmd_args, px->envp) == -1)
+	{
+		free(cmd_path);
+		free_split(cmd_args);
+		ft_error(6);
+	}
 }

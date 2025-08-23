@@ -38,12 +38,6 @@ void	run_pipex_normal(int argc, char **argv, char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	int	validation_result;
-
-	validation_result = validate_args(argc, argv);
-	if (validation_result == 2)
-		handle_here_doc_mode(argc, argv, envp);
-	else
-		run_pipex_normal(argc, argv, envp);
+	run_pipex_normal(argc, argv, envp);
 	return (0);
 }
