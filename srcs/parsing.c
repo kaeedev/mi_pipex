@@ -45,9 +45,13 @@ int	check_files(char *file1, char *file2)
 	int		fd1;
 	int		fd2;
 
+	if (access(file1, F_OK) == -1)
+		ft_error(1);
+	if (access(file1, R_OK) == -1)
+		ft_error(2);
 	fd1 = open(file1, O_RDONLY);
 	if (fd1 == -1)
-		ft_error(1);
+		ft_error(5);
 	close(fd1);
 	fd2 = open(file2, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd2 == -1)
