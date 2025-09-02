@@ -34,7 +34,7 @@ void	ft_error(int i)
 int	validate_args(int argc, char **argv)
 {
 	(void)argv;
-	if (argc >= 5)
+	if (argc == 5)
 		return (1);
 	ft_error(0);
 	return (0);
